@@ -7,6 +7,8 @@ const Recipe = require("../models/Recipe.model");
 const upload = require("../middleware/upload");
 require("express-async-errors");
 
+
+const BASE_URL = process.env.BASE_URL || "http://localhost:3000"
 // GET
 router.get("/", async (req, res, next) => {
   console.log("Retrieve all recipes.");
@@ -14,7 +16,7 @@ router.get("/", async (req, res, next) => {
 
   recipes.forEach((recipe) => {
     if (recipe.image) {
-      recipe.image = process.env.BASE_URL + recipe.image;
+      recipe.image = BASE_URL + recipe.image;
     }
   });
   res.json({ count: recipes.length, results: recipes });
@@ -26,7 +28,7 @@ router.get("/:id", async (req, res) => {
 
   if (!recipe) return res.status(404).send("the recipe is not found..!");
 
-  recipe.image = process.env.BASE_URL + recipe.image;
+  recipe.image = BASE_URL + recipe.image;
 
   res.json(recipe);
 });
@@ -36,7 +38,7 @@ router.post("/", auth, async (req, res) => {
   const { error } = validateRecipe(req.body);
 
   if (error) return res.status(400).json({ message: error.message });
-
+  // image shape is object
   const recipeDetails = _.pick(req.body, [
     "title",
     "description",
@@ -94,12 +96,14 @@ router.delete("/:id", auth, async (req, res) => {
 // Upload images:
 router.post('/upload', (req, res) => {
   upload(req, res, (err) => {
+    console.log(req.file)
     if (err) {
       return res.status(500).json({ error: err.message });
     } else {
       if (!req.file) {
         return res.status(400).json({ error: 'No file selected' });
       }
+      
       res.status(200).json({ message: 'File uploaded successfully', file: req.file });
     }
   });
