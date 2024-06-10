@@ -27,9 +27,12 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id , isAdmin: this.isAdmin }, process.env.JWT_PRIVATE_KEY);
-  return token;
+  return jwt.sign({ _id: this._id , isAdmin: this.isAdmin }, process.env.JWT_PRIVATE_KEY);
 };
+
+userSchema.methods.validateAuthToken = function (authToken) {
+  return jwt.verify(authToken, process.env.JWT_PRIVATE_KEY);
+}
 
 const User = mongoose.model("User", userSchema);
 

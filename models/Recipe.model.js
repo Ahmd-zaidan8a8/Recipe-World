@@ -16,7 +16,7 @@ const recipeSchema = new mongoose.Schema({
       validator: function (v) {
         return v.length > 0;
       },
-      message: "the Meal shoulld have at least one ingridient.",
+      message: "the Meal shoulld have at least one ingredient.",
     },
     required: true,
   },
@@ -26,7 +26,7 @@ const recipeSchema = new mongoose.Schema({
       validator: function (v) {
         return v.length > 2;
       },
-      message: "the Meal shoulld have at least three instructions.",
+      message: "the Meal should have at least three instructions.",
     },
     required: true,
   },
@@ -46,6 +46,10 @@ const recipeSchema = new mongoose.Schema({
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
+  reviews: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Review"
+  }],
 });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
