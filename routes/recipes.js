@@ -51,7 +51,7 @@ router.post("/", auth, async (req, res) => {
   ]);
 
   recipeDetails.author = req.user._id;
-  // recipeDetails.image = "/images/" + recipeDetails.image;
+  recipeDetails.image = "/images/" + recipeDetails.image;
 
   const result = await Recipe.create(recipeDetails);
   console.log("New Recipe has been added to the dataBase .");

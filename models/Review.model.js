@@ -12,11 +12,6 @@ const reviewSchema = new mongoose.Schema({
     min: [0, 'Cannot rate less than 0 stars'],
     required: true,
   },
-  // description: {
-  //   type: String,
-  //   minlength: 20,
-  //   required: false,
-  // },
   createdAt: { type: Date, default: Date.now },
 });
 
